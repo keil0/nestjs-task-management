@@ -1,0 +1,30 @@
+version: '3.1'
+
+services:
+  db:
+    image: postgres
+    ports:
+      - 5432:5432
+    restart: always
+    volumes:
+      - ~/Workspace/POSTGRESQL/nestjs-task-management:/var/lib/postgresql/data:cached
+    environment:
+      POSTGRES_PASSWORD: example
+    networks:
+      - postgres-network
+
+  pgadmin-compose:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "contact@pierrecruz.com"
+      PGADMIN_DEFAULT_PASSWORD: "example"
+    ports:
+      - 8888:80
+    depends_on:
+      - db
+    networks:
+      - postgres-network
+
+networks:
+  postgres-network:
+    driver: bridge
